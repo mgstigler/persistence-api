@@ -15,9 +15,12 @@ def create_app(config=None):
 
     db.init_app(app)  
 
-    from api.blueprints import users
+    from api.blueprints import users, payments, groups, documents
     app.register_blueprint(users.bp) 
-        
+    app.register_blueprint(payments.bp)
+    app.register_blueprint(groups.bp)
+    app.register_blueprint(documents.bp)
+
     return app 
 
 

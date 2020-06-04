@@ -20,7 +20,12 @@ def handle_users():
 def insert_user():
     req_data = request.get_json()
 
-    this_user = user.User(username=req_data['username'], password=req_data['password'], active=req_data['active'])
+    this_user = user.User(
+        username=req_data['username'], 
+        password=req_data['password'], 
+        active=req_data['active'],
+        first_name=req_data['firstName'],
+        last_name=req_data['lastName'])
     db.session.add(this_user)
 
     db.session.commit()
@@ -45,13 +50,15 @@ def get_user(user_id):
     ret_user = {
         "username": this_user.username,
         "password": this_user.password,
+        "firstName": this_user.first_name,
+        "lastName": this_user.last_name,
         "active": this_user.active
     }
     return jsonify(ret_user), 200
 
 
 @bp.route('/<user_id>', methods=['DELETE'])
-def delete_application(user_id):
+def delete_user(user_id):
     try:
         this_user = user.User.query.filter_by(id=user_id).one()
         if not this_user.active:
