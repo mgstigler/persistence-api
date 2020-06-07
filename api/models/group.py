@@ -17,6 +17,3 @@ class Group(base.BaseModel):
 
     def __repr__(self):
         return f"<Group: {self.group_name}>"
-
-    def toJson(self):
-        return json.dumps(self, default=lambda o: o.__dict__)

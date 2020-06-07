@@ -1,17 +1,39 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 
 from ..models import payment
 from api import db, logging
 from sqlalchemy.sql import exists
 
 bp = Blueprint('payments', __name__, url_prefix='/hundred-acre/payments')
+schema_bp = Blueprint('payments_by_user', __name__, url_prefix='/hundred-acre/users/<user_id>/payments')
+
+
+@schema_bp.url_defaults
+def add_url_vars(endpoint, values):
+    values.setdefault('user_id', g.user_id)
+
+@schema_bp.url_value_preprocessor
+def pull_url_vars(endpoint, values):
+    g.user_id = values.pop('user_id')
 
 @bp.route('', methods=['GET'])
 def handle_payments():
     payments = payment.Payment.query.all()
 
     response = []
-    [response.append(payment.to_dict()) for payment in payments]
+    for this_payment in payments:
+        ret_payment = {
+            "item": this_payment.item, 
+            "amount": this_payment.amount, 
+            "paid_at": this_payment.paid_at,
+            "paid": this_payment.paid,
+            "approved": this_payment.approved,
+            "assigned_user": this_payment.assigned_user,
+            "receipt_id": this_payment.receipt_id,
+            "assigned_by": this_payment.assigned_by,
+            "assigned_at": this_payment.assigned_at
+        }
+        response.append(ret_payment)
 
     return jsonify(response), 200
 
@@ -63,4 +85,23 @@ def get_payment(payment_id):
     }
     return jsonify(ret_payment), 200
 
+@schema_bp.route('', methods=['GET'])
+def get_user_payments():
+    user_id = g.user_id
 
+    payments = payment.Payment.query.filter_by(assigned_user=user_id).all()
+    ret_payments = []
+    for this_payment in payments:
+        ret_payment = {
+            "item": this_payment.item, 
+            "amount": this_payment.amount, 
+            "paid_at": this_payment.paid_at,
+            "paid": this_payment.paid,
+            "approved": this_payment.approved,
+            "assigned_user": this_payment.assigned_user,
+            "receipt_id": this_payment.receipt_id,
+            "assigned_by": this_payment.assigned_by,
+            "assigned_at": this_payment.assigned_at
+        }
+        ret_payments.append(ret_payment)
+    return jsonify(ret_payments), 200
