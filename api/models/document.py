@@ -1,6 +1,6 @@
 from ..models import base
 
-from api import db
+from api import db, ma
 
 class Document(base.BaseModel):
     __tablename__ = 'documents'
@@ -21,3 +21,7 @@ class Document(base.BaseModel):
 
     def __repr__(self):
         return f"<Document: {self.document_id}>"
+
+class DocumentSchema(ma.Schema):
+    class Meta:
+        model = Document

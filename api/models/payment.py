@@ -1,6 +1,6 @@
 from ..models import base
 
-from api import db
+from api import db, ma
 
 class Payment(base.BaseModel):
     __tablename__ = 'payments'
@@ -28,3 +28,7 @@ class Payment(base.BaseModel):
 
     def __repr__(self):
         return f"<Item {self.item}>"
+
+class PaymentSchema(ma.Schema):
+    class Meta:
+        model = Payment

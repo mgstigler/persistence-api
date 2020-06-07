@@ -1,6 +1,6 @@
 from ..models import base
 
-from api import db
+from api import db, ma
 
 class Group(base.BaseModel):
     __tablename__ = 'groups'
@@ -20,3 +20,7 @@ class Group(base.BaseModel):
 
     def toJson(self):
         return json.dumps(self, default=lambda o: o.__dict__)
+
+class GroupSchema(ma.Schema):
+    class Meta:
+        model = Group

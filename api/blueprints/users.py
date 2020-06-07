@@ -1,6 +1,7 @@
 from flask import Blueprint, jsonify, request
 
-from ..models import user
+from ..models import user, document, payment, group
+from ..models.user import UserSchema
 from api import db, logging
 from sqlalchemy.sql import exists
 

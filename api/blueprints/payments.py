@@ -1,10 +1,20 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, request, g
 
 from ..models import payment
+from ..models.payment import PaymentSchema
 from api import db, logging
 from sqlalchemy.sql import exists
 
 bp = Blueprint('payments', __name__, url_prefix='/hundred-acre/payments')
+bp2 = Blueprint('payments', __name__, url_prefix='/hundred-acre/users/<user_id>/payments')
+
+@bp2.url_defaults
+def add_url_vars(endpoint, values):
+    values.setdefault('user_id', g.user_id)
+
+@bp2.url_value_preprocessor
+def pull_url_vars(endpoint, values):
+    g.user_id = values.pop('user_id')
 
 @bp.route('', methods=['GET'])
 def handle_payments():
@@ -63,4 +73,12 @@ def get_payment(payment_id):
     }
     return jsonify(ret_payment), 200
 
+@bp2.route('', methods=['GET'])
+def get_user_payments():
+    user_id = g.user_id
 
+    payments = payment.Payment.query.filter_by(assigned_user=user_id).all()
+    payment_schema = PaymentSchema()
+    payments = [payment_schema.dump(payment) for payment in payments]
+
+    return jsonify(payments), 200

@@ -3,3 +3,7 @@ gunicorn==19.9.0
 requests==2.22.0
 flask_sqlalchemy
 flask_migrate
+flask_marshmallow
+marshmallow
+marshmallow-sqlalchemy
+sqlalchemy
