@@ -11,7 +11,15 @@ def handle_documents():
     documents = document.Document.query.all()
 
     response = []
-    [response.append(document.to_dict()) for document in documents]
+    for this_document in documents:
+        ret_document = {
+            "receipt_desc": this_document.receipt_desc,
+            "uploaded_by": this_document.uploaded_by,
+            "group_id": this_document.group_id,
+            "document_id": this_document.document_id,
+            "timestamp": this_document.timestamp
+        }
+        response.append(ret_document)
 
     return jsonify(response), 200
 

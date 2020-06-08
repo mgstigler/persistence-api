@@ -20,7 +20,15 @@ def handle_users():
     users = user.User.query.all()
 
     response = []
-    [response.append(user.to_dict()) for user in users]
+    for this_user in users:
+        ret_user = {
+            "username": this_user.username,
+            "password": this_user.password,
+            "firstName": this_user.first_name,
+            "lastName": this_user.last_name,
+            "active": this_user.active
+        }
+        response.append(ret_user)
 
     return jsonify(response), 200
 

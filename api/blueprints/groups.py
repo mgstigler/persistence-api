@@ -22,7 +22,13 @@ def handle_groups():
     groups = group.Group.query.all()
 
     response = []
-    [response.append(group.to_dict()) for group in groups]
+    for this_group in groups:
+        ret_group = {
+            "groupName": this_group.group_name, 
+            "active": this_group.active, 
+            "createdBy": this_group.created_by
+        }
+        response.append(ret_group)
 
     return jsonify(response), 200
 
@@ -55,12 +61,12 @@ def get_group(group_id):
         this_group = group.Group.query.filter_by(id=group_id).one()
     except NoResultFound:
         return "Group not found", 404
-    ret_payment = {
+    ret_group = {
         "groupName": this_group.group_name, 
         "active": this_group.active, 
         "createdBy": this_group.created_by
     }
-    return jsonify(ret_payment), 200
+    return jsonify(ret_group), 200
 
 @bp.route('/<group_id>', methods=['DELETE'])
 def delete_group(group_id):
