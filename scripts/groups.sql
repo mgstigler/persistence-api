@@ -1,3 +1,16 @@
+create table groups
+(
+    id         serial not null,
+    group_name varchar,
+    active     boolean,
+    created_by integer
+);
+
+alter table groups
+    owner to adminuser;
+
+
+
 insert into groups (id, group_name, created_by, active) values (1, 'Proactive grid-enabled local area network', 1, true);
 insert into groups (id, group_name, created_by, active) values (2, 'Customer-focused tangible process improvement', 2, true);
 insert into groups (id, group_name, created_by, active) values (3, 'Configurable zero administration capacity', 3, true);

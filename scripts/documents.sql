@@ -1,3 +1,23 @@
+create table documents
+(
+    id           serial not null
+        constraint documents_pk
+            primary key,
+    receipt_desc varchar,
+    timestamp    timestamp,
+    uploaded_by  integer,
+    document_id  varchar,
+    group_id     integer
+);
+
+alter table documents
+    owner to adminuser;
+
+create unique index documents_id_uindex
+    on documents (id);
+
+
+
 insert into documents (id, receipt_desc, timestamp, uploaded_by, document_id, group_id) values (1, 'Jabbersphere', '5/19/2020', 1, 1, 1);
 insert into documents (id, receipt_desc, timestamp, uploaded_by, document_id, group_id) values (2, 'Ainyx', '6/20/2019', 2, 2, 2);
 insert into documents (id, receipt_desc, timestamp, uploaded_by, document_id, group_id) values (3, 'Riffwire', '2/5/2020', 3, 3, 3);

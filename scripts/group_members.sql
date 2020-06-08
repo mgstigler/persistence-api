@@ -1,3 +1,20 @@
+create table group_members
+(
+    group_id integer,
+    user_id  integer,
+    active   boolean,
+    id       serial not null
+        constraint group_members_pk
+            primary key
+);
+
+alter table group_members
+    owner to adminuser;
+
+create unique index group_members_id_uindex
+    on group_members (id);
+
+
 insert into group_members (id, user_id, group_id, active) values (1, 1, 1, true);
 insert into group_members (id, user_id, group_id, active) values (2, 2, 2, true);
 insert into group_members (id, user_id, group_id, active) values (3, 3, 3, false);

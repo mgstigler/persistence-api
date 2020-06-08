@@ -7,7 +7,7 @@ services:
         image: hundred-acre/persistence-api:latest
         environment:
             CONNECTION_STRING: host=persistence-db dbname=persistence user=postgres
-            DATABASE_URL: postgresql://postgres@persistence-db:5432/persistence
+            SQLALCHEMY_DATABASE_URI: postgresql://postgres@persistence-db:5432/persistence
         ports:
             - 5000:5000
 
@@ -25,6 +25,6 @@ services:
             - ./scripts/user_documents.sql:/docker-entrypoint-initdb.d/user_documents.sql
             - ./scripts/users.sql:/docker-entrypoint-initdb.d/users.sql
         ports:
-            - 5432:5432
+            - 1234:5432
 
         

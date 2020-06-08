@@ -1,3 +1,22 @@
+create table payments
+(
+    id            serial not null,
+    item          varchar,
+    amount        varchar,
+    paid          boolean,
+    assigned_user integer,
+    receipt_id    integer,
+    assigned_by   integer,
+    approved      boolean,
+    paid_at       varchar,
+    assigned_at   timestamp,
+    group_id      integer
+);
+
+alter table payments
+    owner to adminuser;
+
+
 insert into payments (id, item, amount, paid, assigned_user, receipt_id, assigned_by, approved, paid_at, assigned_at, group_id) values (1, 'Robust zero defect Graphical User Interface', 80, true, 1, 1, 1, false, '5/2/2020', '5/23/2020', 1);
 insert into payments (id, item, amount, paid, assigned_user, receipt_id, assigned_by, approved, paid_at, assigned_at, group_id) values (2, 'Focused attitude-oriented Graphic Interface', 51, false, 2, 2, 2, false, '2/26/2020', '7/26/2019', 2);
 insert into payments (id, item, amount, paid, assigned_user, receipt_id, assigned_by, approved, paid_at, assigned_at, group_id) values (3, 'Centralized value-added orchestration', 48, true, 3, 3, 3, true, '6/3/2020', '2/3/2020', 3);

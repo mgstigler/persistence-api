@@ -1,3 +1,22 @@
+create table users
+(
+    id         serial not null
+        constraint users_pk
+            primary key,
+    username   varchar,
+    password   varchar,
+    active     boolean,
+    first_name varchar,
+    last_name  varchar
+);
+
+alter table users
+    owner to adminuser;
+
+create unique index users_id_uindex
+    on users (id);
+
+
 insert into users (id, username, password, active, first_name, last_name) values (1, 'achaplain0', 'VPAwWUTM4', false, 'Anni', 'Chaplain');
 insert into users (id, username, password, active, first_name, last_name) values (2, 'fcicci1', 'o5JBQRVi', true, 'Fleurette', 'Cicci');
 insert into users (id, username, password, active, first_name, last_name) values (3, 'anorsister2', 'bFaCZK8', false, 'Anne', 'Norsister');

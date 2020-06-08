@@ -1,3 +1,18 @@
+create table user_documents
+(
+    id          serial not null
+        constraint user_documents_pk
+            primary key,
+    user_id     integer,
+    document_id integer
+);
+
+alter table user_documents
+    owner to adminuser;
+
+create unique index user_documents_id_uindex
+    on user_documents (id);
+
 insert into user_documents (id, user_id, document_id) values (1, 1, 1);
 insert into user_documents (id, user_id, document_id) values (2, 2, 2);
 insert into user_documents (id, user_id, document_id) values (3, 3, 3);
