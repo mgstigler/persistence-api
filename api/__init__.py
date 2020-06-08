@@ -27,6 +27,7 @@ def create_app(config=None):
     app.register_blueprint(users.schema_bp)
     app.register_blueprint(groups.schema_bp)
     app.register_blueprint(documents.schema_bp)
+    app.register_blueprint(documents.schema_bp_2)
 
     return app 
 

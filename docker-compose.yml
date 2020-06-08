@@ -1,0 +1,30 @@
+version: "3.7"
+
+services:
+    api:
+        build: .
+        container_name: persistence-api
+        image: hundred-acre/persistence-api:latest
+        environment:
+            CONNECTION_STRING: host=persistence-db dbname=persistence user=postgres
+            DATABASE_URL: postgresql://postgres@persistence-db:5432/persistence
+        ports:
+            - 5000:5000
+
+    database:
+        container_name: persistence-db
+        image: postgres:11.6-alpine
+        environment:
+            POSTGRES_DB: persistence
+        volumes:
+            - ./scripts/documents.sql:/docker-entrypoint-initdb.d/documents.sql
+            - ./scripts/group_documents.sql:/docker-entrypoint-initdb.d/group_documents.sql
+            - ./scripts/group_members.sql:/docker-entrypoint-initdb.d/group_members.sql
+            - ./scripts/groups.sql:/docker-entrypoint-initdb.d/groups.sql
+            - ./scripts/payments.sql:/docker-entrypoint-initdb.d/payments.sql
+            - ./scripts/user_documents.sql:/docker-entrypoint-initdb.d/user_documents.sql
+            - ./scripts/users.sql:/docker-entrypoint-initdb.d/users.sql
+        ports:
+            - 5432:5432
+
+        
