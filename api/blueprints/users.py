@@ -107,3 +107,31 @@ def get_users_by_group():
         ret_users.append(ret_user)
 
     return jsonify(ret_users), 200
+
+@schema_bp.route('', methods=['POST'])
+def create_users_by_group():
+    group_id = g.group_id
+
+    req_data = request.get_json()
+
+    this_user = user.User(
+        username=req_data['username'], 
+        password=req_data['password'], 
+        active=req_data['active'],
+        first_name=req_data['firstName'],
+        last_name=req_data['lastName'])
+    db.session.add(this_user)
+    db.session.flush()
+    db.session.refresh(this_user)
+
+    logging.info(this_user.id)
+    this_group_user = group_members.GroupMembers(
+        group_id=group_id,
+        user_id=this_user.id,
+        active=this_user.active
+    )
+
+    db.session.add(this_group_user)
+    db.session.commit()
+
+    return jsonify(), 200
