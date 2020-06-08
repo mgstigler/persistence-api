@@ -102,6 +102,40 @@ def get_documents_by_group():
 
     return jsonify(ret_docs), 200
 
+@schema_bp.route('', methods=['POST'])
+def insert_document_and_group():
+    group_id = g.group_id
+    req_data = request.get_json()
+    
+    this_document = document.Document(
+        receipt_desc=req_data['receiptDesc'], 
+        uploaded_by=req_data['uploadedBy'], 
+        group_id=req_data['groupId'],
+        document_id=req_data['documentId'],
+        timestamp=req_data['timestamp']
+        )
+    
+    db.session.add(this_document)
+    db.session.flush()
+    db.session.refresh(this_document)
+
+    logging.info(this_document.id)
+    this_group_doc = group_documents.GroupDocument(
+        group_id=group_id,
+        document_id=this_document.id
+    )
+
+    db.session.add(this_group_doc)
+    db.session.commit()
+
+    logging.info(
+        'Document Created',
+        f'A new document has been created named {req_data["receiptDesc"]})',
+        'success'
+    )
+
+    return jsonify(), 200
+
 @schema_bp_2.route('', methods=['GET'])
 def get_documents_by_user():
     user_id = g.user_id
