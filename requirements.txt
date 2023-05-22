@@ -1,6 +1,6 @@
 Flask==1.1.2
 gunicorn==19.9.0
-requests==2.22.0
+requests==2.31.0
 flask_sqlalchemy==2.4.3
 flask_migrate==2.5.3
 flask_marshmallow==0.13.0
